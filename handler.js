@@ -12,5 +12,7 @@ module.exports.helloWorld = (event, context, callback) => {
     }),
   };
 
+  console.log("Hello Serverless World!")
+
   callback(null, response);
 };
