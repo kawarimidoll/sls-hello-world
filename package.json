@@ -1,0 +1,11 @@
+{
+  "name": "sls-hello-world",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kawarimidoll/sls-hello-world.git",
+  "author": "kawarimidoll <kawarimidoll+git@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}
