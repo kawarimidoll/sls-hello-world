@@ -8,7 +8,7 @@
 service: sls-hello-world
 # variablesResolutionMode: 20210326
 
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 # The `provider` block defines where your service will be deployed
 provider:
@@ -30,7 +30,6 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}
-
 
 # The `functions` block defines what code to deploy
 functions:
@@ -73,6 +72,14 @@ functions:
       - http:
           path: todos/{id}
           method: put
+          cors: true
+
+  delete:
+    handler: lambda/todos/delete.delete
+    events:
+      - http:
+          path: todos/{id}
+          method: delete
           cors: true
 
 resources:
