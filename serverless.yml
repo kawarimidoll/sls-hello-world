@@ -59,6 +59,14 @@ functions:
           method: post
           cors: true
 
+  get:
+    handler: lambda/todos/get.get
+    events:
+      - http:
+          path: todos/{id}
+          method: get
+          cors: true
+
 resources:
   Resources:
     helloTable:
