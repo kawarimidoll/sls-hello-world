@@ -32,69 +32,7 @@ provider:
           Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}
 
 # The `functions` block defines what code to deploy
-functions:
-  helloWorld:
-    handler: handler.helloWorld
-    # The `events` block defines how to trigger the handler.helloWorld code
-    events:
-      - http:
-          path: hello-world
-          method: get
-          cors: true
-
-  list:
-    handler: lambda/todos/list.list
-    events:
-      - http:
-          path: todos
-          method: get
-          cors: true
-
-  create:
-    handler: lambda/todos/create.create
-    events:
-      - http:
-          path: todos
-          method: post
-          cors: true
-
-  get:
-    handler: lambda/todos/get.get
-    events:
-      - http:
-          path: todos/{id}
-          method: get
-          cors: true
-
-  update:
-    handler: lambda/todos/update.update
-    events:
-      - http:
-          path: todos/{id}
-          method: put
-          cors: true
-
-  delete:
-    handler: lambda/todos/delete.delete
-    events:
-      - http:
-          path: todos/{id}
-          method: delete
-          cors: true
+functions: ${file(./resources/functions.yml)}
 
 resources:
-  Resources:
-    helloTable:
-      Type: AWS::DynamoDB::Table
-      # DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+  - ${file(./resources/dynamodb.yml)}
