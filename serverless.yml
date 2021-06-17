@@ -3,6 +3,7 @@
 
 # Serverless.yml is the configuration the CLI
 # uses to deploy your code to your provider of choice
+# [Serverless Frameworkを本番運用する際にやっておいたほうが良い事 - Qiita](https://qiita.com/keitakn/items/22cbc3e00acb79560b87)
 
 # The `service` block is the name of the service
 service: sls-hello-world
@@ -14,7 +15,8 @@ frameworkVersion: "2"
 provider:
   name: aws
   runtime: nodejs14.x
-  region: us-west-2
+  # region: us-west-2
+  logRetentionInDays: 7
   lambdaHashingVersion: 20201221
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
@@ -31,7 +33,18 @@ provider:
             - dynamodb:DeleteItem
           Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}
 
-# The `functions` block defines what code to deploy
+plugins:
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: api.kawarimidoll.com
+    basePath: lambda
+    certificateName: '*.kawarimidoll.com'
+    createRoute53Record: true
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+
 functions: ${file(./resources/functions.yml)}
 
 resources:
